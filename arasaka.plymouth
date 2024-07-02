@@ -5,5 +5,5 @@ Comment=original created By Aditya Shakya (@adi1090x), modified by Pascal Schwie
 ModuleName=script
 
 [script]
-ImageDir=/usr/share/plymouth/themes/arasaka
-ScriptFile=/usr/share/plymouth/themes/arasaka/arasaka.script
+ImageDir=@ROOT@
+ScriptFile=@ROOT@arasaka.script
