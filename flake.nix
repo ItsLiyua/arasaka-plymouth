@@ -5,7 +5,12 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
   outputs =
-    { nixpkgs, flake-utils, ... }:
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (
       sys:
       let
@@ -13,7 +18,7 @@
       in
       {
         packages.default = pkgs.stdenv.mkDerivation {
-          pname = "arasaka-plymouth";
+          pname = "plymouth-arasaka-theme";
           version = "1.0";
 
           src = nixpkgs.lib.fileset.toSource {
@@ -33,6 +38,9 @@
 
             		runHook postInstall
             	'';
+        };
+        overlays.default = final: prev: {
+          ${self.packages.${sys}.default.pname} = self.packages.${sys}.default;
         };
       }
     );
