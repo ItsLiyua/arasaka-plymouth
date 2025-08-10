@@ -39,9 +39,6 @@
             		runHook postInstall
             	'';
         };
-        overlays.default = final: prev: {
-          ${self.packages.${sys}.default.pname} = self.packages.${sys}.default;
-        };
       }
     );
 }
