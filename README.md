@@ -3,6 +3,7 @@
 # Arasaka Plymouth Theme
 
 A plymouth theme inspired by the Arasaka Corporation from Cyberpunk 2077.
+Now also in a flake!
 
 <img src="https://gitlab.com/pSchwietzer/arasaka-plymouth/-/raw/main/progress-7.png" width="768" alt="Arasaka Plymouth Theme" />
 
@@ -12,40 +13,33 @@ A plymouth theme inspired by the Arasaka Corporation from Cyberpunk 2077.
 
 ### NixOS
 
-This repo provides a [NixOS package](package.nix) for the theme. Copy it's contents or just download the file into your NixOS configuration and add it to the `packageOverrides` and `systemPackages` attributes, as shown below:
-
-> Note: The [Package](package.nix) will always use the main branch.
+Add the repo to your flake inputs:
 
 ```nix
-{ pkgs, ... }:
+arasaka-plymouth = {
+  url = "github:ItsLiyua/arasaka-plymouth";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+```
 
+Then set it inside your plymouth configuration:
+
+```nix
+{ pkgs, inputs, ... }:
 {
-	nixpkgs.config.packageOverrides = pkgs: rec {
-        # Adjust the path for the package.nix file
-		arasaka-plymouth = pkgs.callPackage ../packages/arasaka-plymouth/package.nix {};
-	};
-
-	environment.systemPackages = with pkgs; [
-		arasaka-plymouth
-	];
-
-	boot = {
-        # Enable the plymouth service
-		plymouth = {
-			enable = true;
-			themePackages = [
-				pkgs.arasaka-plymouth
-			];
-			theme = "arasaka";
-		};
-
-        # ... other boot configuration
-	};
+  boot.plymouth = {
+    enable = true;
+    theme = "arasaka";
+    themePackage = [ inputs.plymouth-arasaka.packages.${pkgs.system}.default ];
+  };
 }
 ```
 
+You might have to tweak the configuration provided a little for it to fit into your already present system.
+
 # Special Thanks
 
+- [pSchwietzer](https://gitlab.com/pSchwietzer/arasaka-plymouth) for the original package.
 - [Plymouth-Themes-NixOs-Conversion](https://github.com/Melechtna/Plymouth-Themes-NixOs-Conversion) for the base NixOS package template.
 - [Plymouth Themes](https://github.com/adi1090x/plymouth-themes) for the base theme and inspiration (Rog 2).
 - [Valency Graphics](https://www.valencygraphics.com/cyberpunk-2077) for the Arasaka logo.
